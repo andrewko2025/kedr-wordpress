@@ -1,0 +1,56 @@
+/* Кедр — оформление полей темы в админке. */
+
+.kedr-fields {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 0 16px;
+}
+
+.kedr-fields label {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+}
+
+.kedr-gallery-field__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 8px 0;
+}
+
+.kedr-gallery-field__list img {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.column-kedr_thumb {
+	width: 70px;
+}
+
+.column-kedr_thumb img {
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.column-kedr_phone {
+	width: 170px;
+}
+
+.kedr-lead-new .row-title {
+	font-weight: 700;
+}
+
+.kedr-lead-new td:first-child,
+.kedr-lead-new th:first-child {
+	box-shadow: inset 3px 0 0 #9a5b28;
+}
+
+.kedr-lead-table th {
+	width: 200px;
+	font-weight: 600;
+}

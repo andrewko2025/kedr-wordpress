@@ -1,0 +1,71 @@
+# Локальное окружение демо-сайта «Кедр».
+#   docker compose up -d                          — запустить сайт
+#   docker compose run --rm cli sh /scripts/setup.sh — установить WordPress и демо-контент
+# Пароли берутся из файла .env (образец — .env.example).
+
+name: kedr
+
+x-wp-env: &wp-env
+  WORDPRESS_DB_HOST: db
+  WORDPRESS_DB_NAME: ${DB_NAME}
+  WORDPRESS_DB_USER: ${DB_USER}
+  WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+  WORDPRESS_DEBUG: "1"
+  WORDPRESS_CONFIG_EXTRA: |
+    define( 'WP_ENVIRONMENT_TYPE', 'local' );
+    define( 'WP_DEBUG_DISPLAY', false );
+    define( 'WP_DEBUG_LOG', true );
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  wordpress:
+    image: wordpress:php8.3-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment: *wp-env
+    volumes:
+      - wp_data:/var/www/html
+      - ./theme/kedr:/var/www/html/wp-content/themes/kedr
+
+  # WP-CLI для установки и обслуживания. Запускается только вручную через `docker compose run`.
+  cli:
+    image: wordpress:cli-php8.3
+    profiles: ["cli"]
+    user: "33:33" # тот же www-data, что и в контейнере wordpress
+    depends_on:
+      - wordpress
+    environment:
+      <<: *wp-env
+      HOME: /tmp
+      WP_URL: ${WP_URL}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+    volumes:
+      - wp_data:/var/www/html
+      - ./theme/kedr:/var/www/html/wp-content/themes/kedr
+      - ./scripts:/scripts:ro
+      - ./seed:/seed:ro
+
+volumes:
+  db_data:
+  wp_data:

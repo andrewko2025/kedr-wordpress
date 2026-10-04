@@ -1,0 +1,50 @@
+/* Кедр — текст в редакторе блоков выглядит так же, как на сайте.
+   WordPress сам ограничивает эти правила областью редактора (.editor-styles-wrapper). */
+
+body {
+	background: #f7f3ec;
+	color: #1f2a24;
+	font: 400 17px/1.6 "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1,
+h2,
+.wp-block-post-title {
+	font-family: "Cormorant Garamond", Georgia, serif;
+	font-weight: 600;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+}
+
+.wp-block-post-title {
+	font-size: 3rem;
+}
+
+h2 {
+	font-size: 2.2rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+a {
+	color: #2f4a3a;
+}
+
+li::marker {
+	color: #a3622c;
+}
+
+blockquote {
+	border-left: 3px solid #a3622c;
+	padding-left: 24px;
+	font-family: "Cormorant Garamond", Georgia, serif;
+	font-size: 1.45rem;
+}
+
+blockquote cite {
+	color: #5f6b63;
+	font: 600 0.9rem/1.4 "Manrope", system-ui, sans-serif;
+}

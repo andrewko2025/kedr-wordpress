@@ -1,0 +1,67 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Кедр — демо-сайт мебельной мастерской",
+		"description": "Тема WordPress «Кедр» с демо-контентом: каталог работ, калькулятор, заявки в админке.",
+		"author": "andrewko2025",
+		"categories": ["Theme"]
+	},
+	"landingPage": "/wp-admin/edit.php?post_type=project",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "setSiteLanguage",
+			"language": "ru_RU"
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"blogname": "Кедр",
+				"blogdescription": "мебель на заказ",
+				"timezone_string": "Europe/Moscow",
+				"date_format": "j F Y",
+				"time_format": "H:i",
+				"start_of_week": 1,
+				"default_comment_status": "closed",
+				"default_ping_status": "closed",
+				"permalink_structure": "/%postname%/"
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "url",
+				"url": "https://andrewko2025.github.io/kedr-wordpress/kedr.zip"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{ "step": "mkdir", "path": "/wordpress/wp-content/kedr-seed" },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/seed.php", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/scripts/seed.php" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/hero.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/hero.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/kuhnya-skandi.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/kuhnya-skandi.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/kuhnya-skandi-2.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/kuhnya-skandi-2.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/kuhnya-ostrov.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/kuhnya-ostrov.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/kuhnya-loft.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/kuhnya-loft.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/shkaf-kupe-zerkalo.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/shkaf-kupe-zerkalo.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/shkaf-prihozhaya.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/shkaf-prihozhaya.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/garderobnaya-otkrytaya.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/garderobnaya-otkrytaya.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/garderobnaya-mansarda.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/garderobnaya-mansarda.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/garderobnaya-mansarda-2.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/garderobnaya-mansarda-2.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/detskaya-shkolnitsa.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/detskaya-shkolnitsa.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/detskaya-cherdak.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/detskaya-cherdak.jpg" } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/kedr-seed/detskaya-cherdak-2.jpg", "data": { "resource": "url", "url": "https://raw.githubusercontent.com/andrewko2025/kedr-wordpress/main/seed/images/detskaya-cherdak-2.jpg" } },
+		{
+			"step": "runPHP",
+			"code": "<?php\nrequire '/wordpress/wp-load.php';\ndefine( 'KEDR_SEED_IMAGES', '/wordpress/wp-content/kedr-seed' );\n// В браузере нарезка миниатюр долгая — показываем оригиналы, вёрстка их подрежет.\nadd_filter( 'intermediate_image_sizes_advanced', '__return_empty_array' );\nrequire KEDR_SEED_IMAGES . '/seed.php';\nflush_rewrite_rules();\n"
+		}
+	]
+}
